@@ -1,0 +1,12 @@
+﻿@page "/chat"
+@using Models 
+
+@foreach(var message in UserMessages)
+{
+    <div>@message.Message</div>
+    <div>@message.User</div>
+}
+
+@code {
+    [Parameter] public List<UserMessage> UserMessages { get; set; }
+}

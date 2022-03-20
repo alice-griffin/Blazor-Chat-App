@@ -1,0 +1,40 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.SignalR.Client;
+@inject NavigationManager NavigationManager
+@using Models 
+@using Data 
+
+    @if(!IsConnected) { 
+
+        <input type="text" placeholder="Username" @bind-value="usernameInput" />
+        <input type="text" placeholder="Room" @bind-value="roomInput" />
+        <button @onclick="StartConnectionAsync" />
+    } 
+    else
+    {
+        <ChatRoom UserMessages="@userMessages" />
+    }
+
+
+@code {
+    private HubConnection hubConnection;
+    private string usernameInput;
+    private string roomInput;
+    private bool IsConnected { get; set; } = false;
+    private UserConnection userConnection;
+    public List<UserMessage> userMessages { get; set; } = new List<UserMessage>();
+
+    private async Task StartConnectionAsync()
+    {
+        hubConnection = new HubConnectionBuilder().WithUrl(NavigationManager.ToAbsoluteUri("/chat")).Build();
+        hubConnection.On<string, string>("ReceiveMessage", (user, message) => {
+            userMessages.Add(new UserMessage { User = user, Message = message, DateSent = DateTime.Now });
+            StateHasChanged();
+        });
+
+        userConnection = new UserConnection { User = usernameInput, Room = roomInput };
+        await hubConnection.StartAsync();
+        await hubConnection.SendAsync("JoinRoom", userConnection);
+        IsConnected = hubConnection.State == HubConnectionState.Connected;
+    }
+}
