@@ -8,11 +8,11 @@
 
         <input type="text" placeholder="Username" @bind-value="usernameInput" />
         <input type="text" placeholder="Room" @bind-value="roomInput" />
-        <button @onclick="StartConnectionAsync" />
+        <button type="submit" @onclick="StartConnectionAsync" />
     } 
     else
     {
-        <ChatRoom UserMessages="@userMessages" />
+        <ChatRoom HubConnection="@hubConnection" UserMessages="@userMessages" />
     }
 
 

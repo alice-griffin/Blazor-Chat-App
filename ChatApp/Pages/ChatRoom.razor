@@ -1,12 +1,25 @@
 ﻿@page "/chat"
 @using Models 
+@using Microsoft.AspNetCore.SignalR.Client 
 
-@foreach(var message in UserMessages)
+@foreach (var message in UserMessages)
 {
     <div>@message.Message</div>
     <div>@message.User</div>
 }
 
+<input @bind-value="@messageInput" type="text" placeholder="Send message"/>
+<button @onclick="SendMessageAsync" type="submit" />
+
 @code {
     [Parameter] public List<UserMessage> UserMessages { get; set; }
+    [Parameter] public HubConnection HubConnection { get; set; }
+    private string messageInput;
+    private UserMessage userMessage;
+
+    private async Task SendMessageAsync()
+    {
+        await HubConnection.SendAsync("SendMessage", messageInput);
+        messageInput = "";
+    }
 }

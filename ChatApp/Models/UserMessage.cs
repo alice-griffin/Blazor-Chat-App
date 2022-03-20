@@ -11,8 +11,6 @@ namespace ChatApp.Models
 
         public string Message { get; set; }
 
-        public string Room { get; set; }
-
         public DateTime DateSent { get; set; }
     }
 }
