@@ -12,7 +12,7 @@
     } 
     else
     {
-        <ChatRoom HubConnection="@hubConnection" UserMessages="@userMessages" />
+        <ChatRoom HubConnection="@hubConnection" UserMessages="@userMessages" UserConnection="@userConnection" OnRoomDisconnected="ConnectionChanged"/>
     }
 
 
@@ -27,6 +27,7 @@
     private async Task StartConnectionAsync()
     {
         hubConnection = new HubConnectionBuilder().WithUrl(NavigationManager.ToAbsoluteUri("/chat")).Build();
+
         hubConnection.On<string, string>("ReceiveMessage", (user, message) => {
             userMessages.Add(new UserMessage { User = user, Message = message, DateSent = DateTime.Now });
             StateHasChanged();
@@ -36,5 +37,10 @@
         await hubConnection.StartAsync();
         await hubConnection.SendAsync("JoinRoom", userConnection);
         IsConnected = hubConnection.State == HubConnectionState.Connected;
+    }
+
+    private void ConnectionChanged(bool isConnected)
+    {
+        IsConnected = isConnected;
     }
 }

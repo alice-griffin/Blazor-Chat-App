@@ -1,5 +1,6 @@
 ﻿@page "/chat"
 @using Models 
+@using Data 
 @using Microsoft.AspNetCore.SignalR.Client 
 
 @foreach (var message in UserMessages)
@@ -10,16 +11,38 @@
 
 <input @bind-value="@messageInput" type="text" placeholder="Send message"/>
 <button @onclick="SendMessageAsync" type="submit" />
+<button @onclick="OnRoomDisconnect" type="button">Leave Room</button>
+
 
 @code {
     [Parameter] public List<UserMessage> UserMessages { get; set; }
     [Parameter] public HubConnection HubConnection { get; set; }
+    [Parameter] public UserConnection UserConnection { get; set; }
     private string messageInput;
     private UserMessage userMessage;
+    private bool IsConnected { get; set; }
+    [Parameter] public EventCallback<bool> OnRoomDisconnected { get; set; }
 
     private async Task SendMessageAsync()
     {
-        await HubConnection.SendAsync("SendMessage", messageInput);
-        messageInput = "";
+        if (messageInput != null)
+        {
+            userMessage = new UserMessage()
+            {
+                DateSent = DateTime.Now,
+                Message = messageInput,
+            };
+            await HubConnection.SendAsync("SendMessage", userMessage);
+            messageInput = "";
+        }
     }
+
+    private async Task OnRoomDisconnect()
+    {
+        await HubConnection.SendAsync("LeaveRoomAsync", UserConnection);
+        await HubConnection.StopAsync();
+        IsConnected = false;
+        await OnRoomDisconnected.InvokeAsync(IsConnected);
+    }
+
 }

@@ -32,7 +32,7 @@ namespace ChatApp.Hubs
 
         public string GenerateRandomGreeting(string user)
         {
-            string[] greetings = new [] { $"{user} is here!", $"{user} has joined! Say hi.", $"Welcome, {user}! Party time!" };
+            string[] greetings = new [] { $"{user} is here.", $"{user} has joined! Say hi.", $"Welcome, {user}." };
             return greetings[random.Next(greetings.Length)];
         }
 
@@ -48,22 +48,43 @@ namespace ChatApp.Hubs
             await Clients.Group(userConnection.Room).SendAsync("ReceiveMessage", BotUser, GenerateRandomGreeting(userConnection.User));
         }
 
-        public async Task SendMessage(string message) 
+        public async Task SendMessage(UserMessage message) 
         {
-            if (Connections.TryGetValue(Context.ConnectionId, out UserConnection userConnection))
+            UserConnection user = GetUser();
+            if (user != null)
             {
-                await Clients.Group(userConnection.Room).SendAsync("ReceiveMessage", userConnection.User, message);
+                await Clients.Group(user.Room).SendAsync("ReceiveMessage", user.User, message.Message);
 
-                if (message == "!toastfact")
+                if (message.Message == "!toastfact")
                 {
-                    await SendBotMessage(userConnection);
+                    await SendBotMessage();
                 }
             }
         }
 
-        public async Task SendBotMessage(UserConnection userConnection)
+        public async Task SendBotMessage()
         {
-            await Clients.Group(userConnection.Room).SendAsync("ReceiveMessage", BotUser, GenerateRandomToastFact());
+            UserConnection user = GetUser();
+            if (user != null)
+            {
+                await Clients.Group(user.Room).SendAsync("ReceiveMessage", BotUser, GenerateRandomToastFact());
+            }
+        }
+
+        public UserConnection GetUser()
+        {
+            if (Connections.TryGetValue(Context.ConnectionId, out UserConnection userConnection))
+            {
+                return userConnection;
+            } else
+            {
+                return null;
+            }
+        }
+
+        public async Task LeaveRoomAsync(UserConnection userConnection)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, userConnection.Room);
         }
     }
 }

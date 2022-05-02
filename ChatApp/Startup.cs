@@ -31,7 +31,6 @@ namespace ChatApp
             services.AddRazorPages();
             services.AddSignalR();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
             //compresses data sent between server and client
             services.AddResponseCompression(opts => {
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/octet-stream" });
