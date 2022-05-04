@@ -41,7 +41,7 @@
     {
         await HubConnection.SendAsync("LeaveRoomAsync", UserConnection);
         await HubConnection.StopAsync();
-        IsConnected = false;
+        IsConnected = HubConnection.State == HubConnectionState.Connected;
         await OnRoomDisconnected.InvokeAsync(IsConnected);
     }
 

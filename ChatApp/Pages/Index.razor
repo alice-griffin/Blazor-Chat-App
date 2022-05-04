@@ -5,10 +5,38 @@
 @using Data 
 
     @if(!IsConnected) { 
-
-        <input type="text" placeholder="Username" @bind-value="usernameInput" />
-        <input type="text" placeholder="Room" @bind-value="roomInput" />
-        <button type="submit" @onclick="StartConnectionAsync" />
+        <div class="container">
+            <div class="top-bar">
+                <div>
+                    <span class="">the computer</span>
+                </div>
+                <ul class="list-group">
+                    <li>
+                        <i class="material-icons">
+                            question_mark
+                        </i>
+                    </li>
+                    <li>
+                        <i class="material-icons">
+                            minimize
+                        </i>
+                    </li>
+                    <li>
+                        <i class="material-icons">
+                            close
+                        </i>
+                    </li>
+                </ul>
+            </div>
+            <div class="inner-window">
+                <div>
+                    <h3>Chat Room</h3>
+                </div>
+                <input type="text" placeholder="Username" @bind-value="usernameInput" />
+                <input type="text" placeholder="Room" @bind-value="roomInput" />
+                <button type="submit" @onclick="StartConnectionAsync" />
+            </div>
+        </div>
     } 
     else
     {
@@ -42,5 +70,7 @@
     private void ConnectionChanged(bool isConnected)
     {
         IsConnected = isConnected;
+        usernameInput = "";
+        roomInput = "";
     }
 }

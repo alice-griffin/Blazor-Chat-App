@@ -1,0 +1,43 @@
+﻿.container {
+    border-width: 1px;
+    border-style: solid;
+    border-color: white dimgrey dimgrey white;
+    padding: 0;
+}
+
+.top-bar {
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+}
+
+ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    margin-right: 2px;
+    list-style: none;
+    height: 19px;
+}
+
+.inner-window {
+    border: 1px solid gray;
+    margin: 0 2px 0 2px;
+}
+
+.list-group-item {
+    padding: 0px;
+}
+
+.material-icons {
+    font-size: 14px;
+    font-weight: 700;
+    border-width: 1px;
+    border-style: solid;
+    border-color: white dimgrey dimgrey white;
+    background: lightgrey; 
+}
+
+li {
+    display: inline-block;   
+}
