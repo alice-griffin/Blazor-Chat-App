@@ -3,12 +3,26 @@
     border-style: solid;
     border-color: white dimgrey dimgrey white;
     padding: 0;
+    background-color: #f7d5ee;
+    width: 50%;
+    margin-top: 200px;
+}
+
+.inner-window {
+    background-color: azure;
 }
 
 .top-bar {
-    background-color: white;
     display: flex;
     justify-content: space-between;
+    margin: 4px;
+    line-height: 1;
+    text-align: center;
+}
+
+.window-title, span {
+    line-height: 1;
+    vertical-align: bottom;
 }
 
 ul {
@@ -22,7 +36,7 @@ ul {
 
 .inner-window {
     border: 1px solid gray;
-    margin: 0 2px 0 2px;
+    margin: 0 4px 0 4px;
 }
 
 .list-group-item {
@@ -30,7 +44,7 @@ ul {
 }
 
 .material-icons {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
     border-width: 1px;
     border-style: solid;

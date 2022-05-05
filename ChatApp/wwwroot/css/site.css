@@ -4,14 +4,11 @@
     box-sizing: border-box;
 }
 
-page {
-    background-color: lightblue;
+html, body, .page, .main {
+    max-height: 100vh;
+    background-color: #b0dbff;
 }
 
-html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    min-height: 100vh;
-}
 
 a, .btn-link {
     color: #0366d6;
@@ -24,7 +21,7 @@ a, .btn-link {
 }
 
 .content {
-    padding-top: 1.1rem;
+    max-height: 100vh;
 }
 
 .valid.modified:not([type=checkbox]) {
