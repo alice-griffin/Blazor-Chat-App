@@ -9,6 +9,7 @@
             <div class="top-bar">
                 <div class="window-title">
                     <span class="">the computer</span>
+                    <Clock />
                 </div>
                 <ul class="list-group">
                     <li>
@@ -30,11 +31,11 @@
             </div>
             <div class="inner-window">
                 <div>
-                    <h3>Chat Room</h3>
+                    <h3 class="lobby-title">Chat Room</h3>
                 </div>
                 <input type="text" placeholder="Username" @bind-value="usernameInput" />
                 <input type="text" placeholder="Room" @bind-value="roomInput" />
-                <button type="submit" @onclick="StartConnectionAsync" />
+                <button type="submit" @onclick="StartConnectionAsync">OK</button>
             </div>
         </div>
     } 

@@ -1,0 +1,59 @@
+﻿@using System.Timers 
+
+
+<p>@CurrentTime</p>
+
+
+@code {
+    private string CurrentTime;
+    private event EventHandler Tick;
+    private static Timer Timer = new Timer(1000);
+    private bool IsFirstRender;
+
+    protected override void OnInitialized()
+    {
+        IsFirstRender = true;
+        base.OnInitialized();
+        CurrentTime = DateTime.Now.ToString("HH:mm:ss tt");
+        TimerStart();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            IsFirstRender = true;
+        } else
+        {
+            IsFirstRender = false;
+        }
+    }
+
+    private void TimerStart()
+    {
+        TimeTick();
+    }
+
+    private void TimeTick()
+    {
+        Timer.Elapsed += OnTimedEvent;
+        Timer.Enabled = true;
+    }
+
+    private void OnTimedEvent(object source, ElapsedEventArgs e)
+    {
+        CurrentTime = DateTime.Now.ToString("HH:mm:ss tt");
+        InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+    //public void Dispose(bool IsFirstRender)
+    //{
+    //    if (!IsFirstRender)
+    //    {
+    //        Timer.Dispose();
+    //    }
+    //}
+}
