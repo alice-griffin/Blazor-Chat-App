@@ -1,5 +1,4 @@
-﻿using ChatApp.Data;
-using ChatApp.Models;
+﻿using ChatApp.Api.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,13 +7,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ChatApp.Controllers
+namespace ChatApp.Api.Controllers
 {
     [ApiController]
-    [Route("api/Todo")]
+    [Route("api/[controller]")]
     public class TodoListController : Controller
     {
-        private readonly TodoListContext context;
+        private TodoListContext context;
+
+        private List<TodoListItem> todoItems = new List<TodoListItem>()
+        {
+            new TodoListItem { Item = "make doc appt", Id = 1 },
+            new TodoListItem { Item = "something else", Id = 2 }
+        };
 
         public TodoListController(TodoListContext _context)
         {
@@ -28,7 +33,8 @@ namespace ChatApp.Controllers
             {
                 var todos = await context.TodoItems.ToListAsync();
                 return Ok(todos);
-            } catch
+            }
+            catch
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error occured retrieving items");
             }
@@ -48,7 +54,7 @@ namespace ChatApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTodoItem(TodoListModel todoItem)
+        public async Task<IActionResult> CreateTodoItem(TodoListItem todoItem)
         {
             if (todoItem == null)
             {
@@ -60,14 +66,15 @@ namespace ChatApp.Controllers
                 context.Add(todoItem);
                 await context.SaveChangesAsync();
                 return Ok(todoItem.Id);
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating item: {e}");
             }
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTodoItem(int id, TodoListModel todoItem)
+        public async Task<IActionResult> UpdateTodoItem(int id, TodoListItem todoItem)
         {
             if (id != todoItem.Id)
             {
@@ -78,12 +85,13 @@ namespace ChatApp.Controllers
             {
                 return NotFound();
             }
-            
+
             context.Entry(todoItem).State = EntityState.Modified;
             try
             {
                 await context.SaveChangesAsync();
-            } catch
+            }
+            catch
             {
                 throw new DbUpdateConcurrencyException();
             }
@@ -91,6 +99,5 @@ namespace ChatApp.Controllers
             return Ok(todoItem.Id);
 
         }
-        
     }
 }

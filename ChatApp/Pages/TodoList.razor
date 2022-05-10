@@ -1,7 +1,47 @@
 ﻿@page "/todo"
-@inject HttpClient HttpClient
+@using Models
+@using Services;
 
+@if (todos != null && todos.Count() > 0) {
+  
+    @foreach (var todo in todos)
+    {
+        <div>@todo.Item</div>
+    }
+}
+
+<input placeholder="Add Item" @bind-value="todoItemValue" />
+<button>Add</button>
 
 @code {
+    [Inject]
+    public ITodoListService TodoListService { get; set; }
+    public TodoListModel NewTodoItem { get; set; }
+    public string todoItemValue;
 
+    IEnumerable<TodoListModel> todos = new List<TodoListModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Refresh();
+    }
+
+    private async Task Refresh()
+    {
+        todos = await TodoListService.GetTodos();
+        StateHasChanged();
+    }
+
+    private async Task AddTodo()
+    {
+        NewTodoItem = new TodoListModel
+        {
+            Id = todos.Count() + 1,
+            Item = todoItemValue
+        };
+
+        await TodoListService.CreateTodoItem(NewTodoItem);
+        todos = await TodoListService.GetTodos();
+        StateHasChanged();
+    }
 }

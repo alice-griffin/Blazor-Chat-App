@@ -6,11 +6,12 @@
 @code {
     private string CurrentTime;
     private event EventHandler Tick;
-    private static Timer Timer = new Timer(1000);
+    private static Timer Timer;
     private bool IsFirstRender;
 
     protected override void OnInitialized()
     {
+        Timer = new Timer(1000);
         IsFirstRender = true;
         base.OnInitialized();
         CurrentTime = DateTime.Now.ToString("HH:mm:ss tt");
