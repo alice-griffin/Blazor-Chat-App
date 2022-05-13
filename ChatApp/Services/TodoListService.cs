@@ -46,5 +46,10 @@ namespace ChatApp.Services
             return await httpClient.PostAsJsonAsync("TodoList", todoItem);
         }
 
+        public async Task<HttpResponseMessage> DeleteTodoItem(int id)
+        {
+            return await httpClient.DeleteAsync($"TodoList/{id}");
+        }
+
     }
 }

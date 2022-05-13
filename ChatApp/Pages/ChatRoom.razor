@@ -1,23 +1,29 @@
 ﻿@page "/chat"
-@using Models 
-@using Data 
-@using Microsoft.AspNetCore.SignalR.Client 
+@using Models
+@using Data
+@using Microsoft.AspNetCore.SignalR.Client
 
-@foreach (var message in UserMessages)
-{
-    <div>@message.Message</div>
-    <div>@message.User</div>
-}
+<div class="chat-box">
+    @foreach (var message in UserMessages)
+    {
+        <div class="chat-message">
+            <span class="user">@message.User:</span>
+            <span>@message.Message</span>
+        </div>
+    }
 
-<input @bind-value="@messageInput" type="text" placeholder="Send message"/>
-<button @onclick="SendMessageAsync" type="submit">Send</button>
-<button @onclick="OnRoomDisconnect" type="button">Leave Room</button>
+    <UserList currentUser="@UserConnection" />
 
+    <input @bind-value="@messageInput" type="text" placeholder="Send message" />
+    <button @onclick="SendMessageAsync" type="submit">Send</button>
+    <button @onclick="OnRoomDisconnect" type="button">Leave Room</button>
+</div>
 
 @code {
     [Parameter] public List<UserMessage> UserMessages { get; set; }
     [Parameter] public HubConnection HubConnection { get; set; }
     [Parameter] public UserConnection UserConnection { get; set; }
+    [Parameter] public List<UserConnection> UsersInRoom { get; set; }
     private string messageInput;
     private UserMessage userMessage;
     private bool IsConnected { get; set; }

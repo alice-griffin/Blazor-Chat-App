@@ -8,7 +8,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatApp", "ChatApp\ChatApp.
 		{C709F496-CDBB-4751-A263-CE253C352230} = {C709F496-CDBB-4751-A263-CE253C352230}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.Api", "ChatApp.Api\ChatApp.Api.csproj", "{C709F496-CDBB-4751-A263-CE253C352230}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatApp.Api", "ChatApp.Api\ChatApp.Api.csproj", "{C709F496-CDBB-4751-A263-CE253C352230}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -4,13 +4,16 @@
     border-color: white dimgrey dimgrey white;
     padding: 0;
     background-color: #f7d5ee;
-    width: 50%;
-    margin-top: 200px;
-    height: 50%;
+}
+
+.chat-lobby-div {
+    max-width: 600px;
+
 }
 
 .inner-window {
     background-color: azure;
+    margin: 10px;
 }
 
 .inner-window input {
@@ -49,6 +52,7 @@ ul {
 .inner-window {
     border: 1px solid gray;
     margin: 0 4px 4px 4px;
+    height: 600px;
 }
 
 .list-group-item {
@@ -70,4 +74,30 @@ li {
 
 .lobby-title {
     font-family: 'Source Code Pro', monospace;
+}
+
+.mainpage-parent {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 75%;
+    height: 100vh;
+}
+
+.todo-box {
+    max-width: 275px;
+}
+
+.sidebar-menu {
+    margin-top: 100px;
+    margin-right: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.chat, .task {
+    font-size: 40px;
+    margin-top: 50px;
 }

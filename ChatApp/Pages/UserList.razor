@@ -1,0 +1,23 @@
+﻿@using Data
+@inject IDictionary<string, UserConnection> Connections
+
+<div class="user-list">
+    <ul>
+        @foreach (var user in usersInRoom)
+        {
+            <li>@user.User</li>
+        }
+    </ul>
+</div>
+ 
+
+@code {
+    private List<UserConnection> usersInRoom = new List<UserConnection>();
+    [Parameter] public UserConnection currentUser { get; set; }
+
+    protected override void OnInitialized()
+    {
+        usersInRoom = Connections.Values.Where(c => c.Room == currentUser.Room).ToList();
+        base.OnInitialized();
+    }
+}

@@ -6,3 +6,12 @@ button {
     height: 25px;
     font-family: 'VT323', monospace;
 }
+
+.chat-box {
+    font-family: 'Source Code Pro', monospace;
+    margin: 10px;
+}
+
+.user {
+    font-weight: bold;
+}

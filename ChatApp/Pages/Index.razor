@@ -1,52 +1,88 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.SignalR.Client;
 @inject NavigationManager NavigationManager
+@inject IDictionary<string, UserConnection> Connections; 
 @using Models 
 @using Data 
 
-    @if(!IsConnected) { 
-        <div class="container">
-            <div class="top-bar">
-                <div class="window-title">
-                    <span class="">the computer</span>
-                    <Clock />
-                </div>
-                <ul class="list-group">
-                    <li>
-                        <i class="material-icons">
-                            question_mark
-                        </i>
-                    </li>
-                    <li>
-                        <i class="material-icons">
-                            minimize
-                        </i>
-                    </li>
-                    <li>
-                        <i class="material-icons">
-                            close
-                        </i>
-                    </li>
-                </ul>
+<div class="sidebar-menu">
+    <i class="material-icons chat">
+        chat
+    </i>
+    <i class="material-icons task">
+        task
+    </i>
+</div>
+<div class="mainpage-parent">
+    <div class="container chat-lobby-div">
+        <div class="top-bar">
+            <div class="window-title">
+                <span class="">the computer</span>
+                <Clock />
             </div>
-            <div class="inner-window">
+            <ul class="list-group">
+                <li>
+                    <i class="material-icons">
+                        question_mark
+                    </i>
+                </li>
+                <li>
+                    <i class="material-icons">
+                        minimize
+                    </i>
+                </li>
+                <li>
+                    <i class="material-icons">
+                        close
+                    </i>
+                </li>
+            </ul>
+        </div>
+        <div class="inner-window">
+            @if (!IsConnected)
+            {
                 <div>
                     <h3 class="lobby-title">Chat Room</h3>
                 </div>
                 <input type="text" placeholder="Username" @bind-value="usernameInput" />
                 <input type="text" placeholder="Room" @bind-value="roomInput" />
                 <button type="submit" @onclick="StartConnectionAsync">OK</button>
-            </div>
-        </div>
 
-        <div>
+            }
+            else
+            {
+                <ChatRoom HubConnection="@hubConnection" UserMessages="@userMessages" UserConnection="@userConnection" OnRoomDisconnected="ConnectionChanged" UsersInRoom="@usersInRoom" />
+            }
+        </div>
+    </div>
+    <div class="todo-box container">
+        <div class="top-bar">
+            <div class="window-title">
+                <span class="">my to-do list</span>
+            </div>
+            <ul class="list-group">
+                <li>
+                    <i class="material-icons">
+                        question_mark
+                    </i>
+                </li>
+                <li>
+                    <i class="material-icons">
+                        minimize
+                    </i>
+                </li>
+                <li>
+                    <i class="material-icons">
+                        close
+                    </i>
+                </li>
+            </ul>
+        </div>
+        <div class="inner-window">
             <TodoList />
         </div>
-    } 
-    else
-    {
-        <ChatRoom HubConnection="@hubConnection" UserMessages="@userMessages" UserConnection="@userConnection" OnRoomDisconnected="ConnectionChanged"/>
-    }
+    </div>
+</div>
 
 
 @code {
@@ -56,6 +92,7 @@
     private bool IsConnected { get; set; } = false;
     private UserConnection userConnection;
     public List<UserMessage> userMessages { get; set; } = new List<UserMessage>();
+    public List<UserConnection> usersInRoom;
 
     private async Task StartConnectionAsync()
     {
@@ -70,6 +107,8 @@
         await hubConnection.StartAsync();
         await hubConnection.SendAsync("JoinRoom", userConnection);
         IsConnected = hubConnection.State == HubConnectionState.Connected;
+        usersInRoom = new List<UserConnection>();
+        usersInRoom = Connections.Values.Where(c => c.Room == userConnection.Room).ToList();
     }
 
     private void ConnectionChanged(bool isConnected)

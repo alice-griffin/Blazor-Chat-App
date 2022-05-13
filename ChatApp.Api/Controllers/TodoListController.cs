@@ -99,5 +99,15 @@ namespace ChatApp.Api.Controllers
             return Ok(todoItem.Id);
 
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTodoItem(int id)
+        {
+            var todoItemToDelete = await context.TodoItems.FirstOrDefaultAsync(item => item.Id == id);
+
+            context.Remove(todoItemToDelete);
+            await context.SaveChangesAsync();
+            return Ok(id);
+        }
     }
 }

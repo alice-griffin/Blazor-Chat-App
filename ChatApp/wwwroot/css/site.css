@@ -5,7 +5,7 @@
 }
 
 html, body, .page, .main {
-    max-height: 100vh;
+    height: 100vh;
     background-color: #b0dbff;
 }
 
@@ -21,7 +21,11 @@ a, .btn-link {
 }
 
 .content {
-    max-height: 100vh;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+ 
 }
 
 .valid.modified:not([type=checkbox]) {
