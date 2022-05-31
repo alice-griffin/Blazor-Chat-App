@@ -107,12 +107,11 @@
         await hubConnection.StartAsync();
         await hubConnection.SendAsync("JoinRoom", userConnection);
         IsConnected = hubConnection.State == HubConnectionState.Connected;
-        usersInRoom = new List<UserConnection>();
-        usersInRoom = Connections.Values.Where(c => c.Room == userConnection.Room).ToList();
     }
 
     private void ConnectionChanged(bool isConnected)
     {
+
         IsConnected = isConnected;
         usernameInput = "";
         roomInput = "";

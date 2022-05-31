@@ -14,5 +14,9 @@ namespace ChatApp.Services
         Task<TodoListModel> GetTodoById(int id);
 
         Task<HttpResponseMessage> CreateTodoItem(TodoListModel item);
+
+        Task<HttpResponseMessage> DeleteTodoItem(int id);
+
+        Task<HttpResponseMessage> EditTodoItem(TodoListModel item, int id);
     }
 }

@@ -14,10 +14,14 @@
 @code {
     private List<UserConnection> usersInRoom = new List<UserConnection>();
     [Parameter] public UserConnection currentUser { get; set; }
+    private bool shouldRender = false;
 
-    protected override void OnInitialized()
+
+
+    public void RefreshList()
     {
         usersInRoom = Connections.Values.Where(c => c.Room == currentUser.Room).ToList();
-        base.OnInitialized();
+        StateHasChanged();
     }
+
 }

@@ -3,7 +3,7 @@
     border-style: solid;
     border-color: white dimgrey dimgrey white;
     padding: 0;
-    background-color: #f7d5ee;
+    background-color: #FDCFF3;
 }
 
 .chat-lobby-div {
@@ -12,8 +12,7 @@
 }
 
 .inner-window {
-    background-color: azure;
-    margin: 10px;
+    background-color: #ffe0d6;
 }
 
 .inner-window input {

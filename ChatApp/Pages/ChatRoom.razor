@@ -3,20 +3,22 @@
 @using Data
 @using Microsoft.AspNetCore.SignalR.Client
 
-<div class="chat-box">
-    @foreach (var message in UserMessages)
-    {
-        <div class="chat-message">
-            <span class="user">@message.User:</span>
-            <span>@message.Message</span>
-        </div>
-    }
+<div class="chatbox-parent">
+    <div class="chat-box">
+        @foreach (var message in UserMessages)
+        {
+            <div class="chat-message">
+                <span class="user">@message.User:</span>
+                <span>@message.Message</span>
+            </div>
+        }
 
-    <UserList currentUser="@UserConnection" />
 
-    <input @bind-value="@messageInput" type="text" placeholder="Send message" />
-    <button @onclick="SendMessageAsync" type="submit">Send</button>
-    <button @onclick="OnRoomDisconnect" type="button">Leave Room</button>
+        <input @bind-value="@messageInput" type="text" placeholder="Send message" />
+        <button @onclick="SendMessageAsync" type="submit">Send</button>
+        <button @onclick="OnRoomDisconnect" type="button">Leave Room</button>
+    </div>
+    <UserList @ref="UserListComponent" currentUser="@UserConnection" />
 </div>
 
 @code {
@@ -28,6 +30,12 @@
     private UserMessage userMessage;
     private bool IsConnected { get; set; }
     [Parameter] public EventCallback<bool> OnRoomDisconnected { get; set; }
+    protected UserList UserListComponent;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        UserListComponent.RefreshList();
+    }
 
     private async Task SendMessageAsync()
     {
@@ -37,6 +45,7 @@
             {
                 DateSent = DateTime.Now,
                 Message = messageInput,
+                User = UserConnection.User
             };
             await HubConnection.SendAsync("SendMessage", userMessage);
             messageInput = "";
@@ -50,5 +59,6 @@
         IsConnected = HubConnection.State == HubConnectionState.Connected;
         await OnRoomDisconnected.InvokeAsync(IsConnected);
     }
+
 
 }

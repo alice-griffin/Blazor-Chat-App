@@ -82,15 +82,15 @@ namespace ChatApp.Hubs
             }
         }
 
-        public async Task LeaveRoomAsync(UserConnection userConnection, string roomName)
+        public async Task LeaveRoomAsync(UserConnection userConnection)
         {
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, userConnection.Room);
             await Clients.Group(userConnection.Room).SendAsync("ReceiveMessage", BotUser, $"{userConnection.User} has left the chatroom.");
+            Connections.Remove(Context.ConnectionId);
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, userConnection.Room);
         }
 
         public override Task OnDisconnectedAsync(Exception exception)
         {
-            Connections.Remove(Context.ConnectionId);
             return base.OnDisconnectedAsync(exception);
         }
 

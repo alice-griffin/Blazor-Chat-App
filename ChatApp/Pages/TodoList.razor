@@ -9,8 +9,13 @@
                 <tr>
                 <td>@todo.Item</td>
                 <td>
-                    <i class="material-icons">
+                    <i class="material-icons" @onclick="() => DeleteTodo(todo.Id)">
                         delete
+                    </i>
+                </td>
+                <td>
+                    <i class="material-icons" @onclick="() => EditTodo(todo.Id, todo)">
+                        edit
                     </i>
                 </td>
                 </tr>
@@ -61,5 +66,15 @@
             errorValue = "There's nothing to add, pal!";
         }
         StateHasChanged();
+    }
+
+    private async Task DeleteTodo(int id)
+    {
+        await TodoListService.DeleteTodoItem(id);
+    }
+
+    private async Task EditTodo(int id, TodoListModel todoListItem)
+    {
+        await TodoListService.EditTodoItem(todoListItem, id);
     }
 }

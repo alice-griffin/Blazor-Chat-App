@@ -51,5 +51,11 @@ namespace ChatApp.Services
             return await httpClient.DeleteAsync($"TodoList/{id}");
         }
 
+        public async Task<HttpResponseMessage> EditTodoItem(TodoListModel todoItem, int id)
+        {
+            return await httpClient.PutAsJsonAsync($"TodoList/{id}", todoItem);
+        }
+
+
     }
 }
