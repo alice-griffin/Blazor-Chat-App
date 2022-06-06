@@ -4,18 +4,29 @@
 
 @if (todos != null && todos.Count() > 0) {
       <table>
-            @foreach (var todo in todos)
+            @foreach (var todo in todos.Select((value, index) => new { value, index }))
             {
                 <tr>
-                <td>@todo.Item</td>
+                @if (IsEditing.Count() > 0 && IsEditing[todo.index].Equals(true))
+                {
+                    <td><input value="@todo.value.Item" @oninput="(e) => todo.value.Item = e.Value.ToString()"/></td>
+                } else
+                {
+                    <td>@todo.value.Item</td>
+                }
                 <td>
-                    <i class="material-icons" @onclick="() => DeleteTodo(todo.Id)">
+                    <i class="material-icons" @onclick="() => DeleteTodo(todo.value.Id)">
                         delete
                     </i>
                 </td>
                 <td>
-                    <i class="material-icons" @onclick="() => EditTodo(todo.Id, todo)">
+                    <i class="material-icons" @onclick="() => SetIsEditing(todo.index)">
                         edit
+                    </i>
+                </td>
+                <td>
+                    <i class="material-icons" @onclick="() => EditTodo(todo.value.Id, new TodoListModel { Id = todo.value.Id, Item = todo.value.Item} )">
+                        save
                     </i>
                 </td>
                 </tr>
@@ -34,6 +45,8 @@
     public TodoListModel NewTodoItem { get; set; }
     public string todoItemValue;
     public string errorValue;
+    bool[] IsEditing;
+    int count = 0;
 
     IEnumerable<TodoListModel> todos = new List<TodoListModel>();
 
@@ -46,6 +59,7 @@
     private async Task Refresh()
     {
         todos = await TodoListService.GetTodos();
+        IsEditing = new bool[todos.Count()];
         StateHasChanged();
     }
 
@@ -61,6 +75,7 @@
 
             await TodoListService.CreateTodoItem(NewTodoItem);
             todos = await TodoListService.GetTodos();
+            IsEditing = new bool[todos.Count()];
         } else
         {
             errorValue = "There's nothing to add, pal!";
@@ -71,10 +86,26 @@
     private async Task DeleteTodo(int id)
     {
         await TodoListService.DeleteTodoItem(id);
+        await Refresh();
     }
 
     private async Task EditTodo(int id, TodoListModel todoListItem)
     {
-        await TodoListService.EditTodoItem(todoListItem, id);
+        if (!String.IsNullOrEmpty(todoListItem.Item))
+        {
+            await TodoListService.EditTodoItem(todoListItem, id);
+        }
+        IsEditing = new bool[todos.Count()];
+    }
+
+    private void SetIsEditing(int id)
+    {
+        for (int i = 0; i < IsEditing.Length; i++)
+        {
+            if (i == id)
+            {
+                IsEditing[i] = true;
+            }
+        }
     }
 }
