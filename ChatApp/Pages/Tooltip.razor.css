@@ -1,0 +1,13 @@
+﻿.tooltip:hover span {
+    visibility: visible;
+}
+
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+span {
+    visibility: hidden;
+    position: absolute;
+}

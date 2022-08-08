@@ -1,0 +1,15 @@
+﻿
+<div class="tooltip-wrapper">
+    <span class="tooltip-inner">@Text</span>
+    @ChildContent
+</div>
+
+
+@code {
+
+    [Parameter]
+    public string Text { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}

@@ -99,4 +99,5 @@ li {
 .chat, .task {
     font-size: 40px;
     margin-top: 50px;
+    cursor: pointer;
 }

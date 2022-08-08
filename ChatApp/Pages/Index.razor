@@ -6,15 +6,20 @@
 @using Data 
 
 <div class="sidebar-menu">
-    <i class="material-icons chat">
-        chat
-    </i>
-    <i class="material-icons task">
-        task
-    </i>
+    <Tooltip Text="launch the chat">
+        <i @onclick="ToggleChat" @onmouseover="ShowTooltip" class="material-icons chat">
+            chat
+        </i>
+    </Tooltip>
+
+    <Tooltip Text="launch the todo-list">
+        <i @onclick="ToggleTodo" class="material-icons task">
+            task
+        </i>
+    </Tooltip>
 </div>
 <div class="mainpage-parent">
-    <div class="container chat-lobby-div">
+    <div class="container chat-lobby-div" hidden="@chatHidden">
         <div class="top-bar">
             <div class="window-title">
                 <span class="">the computer</span>
@@ -55,7 +60,7 @@
             }
         </div>
     </div>
-    <div class="todo-box container">
+    <div class="todo-box container" hidden="@todoHidden">
         <div class="top-bar">
             <div class="window-title">
                 <span class="">my to-do list</span>
@@ -93,6 +98,8 @@
     private UserConnection userConnection;
     public List<UserMessage> userMessages { get; set; } = new List<UserMessage>();
     public List<UserConnection> usersInRoom;
+    private bool chatHidden = true;
+    private bool todoHidden = true;
 
     private async Task StartConnectionAsync()
     {
@@ -116,4 +123,33 @@
         usernameInput = "";
         roomInput = "";
     }
+
+    private void ToggleChat()
+    {
+        if (chatHidden)
+        {
+            chatHidden = false;
+        } else
+        {
+            chatHidden = true;
+        }
+    }
+
+    private void ToggleTodo()
+    {
+        if (todoHidden)
+        {
+            todoHidden = false;
+        } else
+        {
+            todoHidden = true;
+        }
+    }
+
+    private void ShowTooltip()
+    {
+
+    }
+
+
 }
